@@ -1,21 +1,23 @@
 /**
-ZJ-TASK:
 
-Shunday function yozing, u berilgan arrayni ichidagi numberlarni qiymatini hisoblab qaytarsin.
-MASALAN: reduceNestedArray([1, [1, 2, [4]]]) return 8
+ZK-TASK:
+
+Shunday function yozing, u har soniyada bir marta consolega 1 dan 5 gacha bolgan raqamlarni chop etsin va 5 soniyadan keyin ishini toxtatsin.
+MASALAN: printNumbers()
 
 **/
 
-function reduceNestedArray(arr: any): any {
-	const newArr = arr.flat(Infinity);
+function printNumbers(): any {
+	let counter = 1;
 
-	let count: number = 0;
+	const interval = setInterval(() => {
+		console.log(counter);
+		counter++;
 
-	for (let i = 0; i < newArr.length; i++) {
-		count += newArr[i];
-	}
-
-	return count;
+		if (counter > 5) {
+			clearInterval(interval);
+		}
+	}, 1000);
 }
 
-console.log(reduceNestedArray([1, [1, 2, [4]]]));
+printNumbers();
