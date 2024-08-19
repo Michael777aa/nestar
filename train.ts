@@ -1,23 +1,23 @@
 /**
 
-ZK-TASK:
+ZL-TASK:
 
-Shunday function yozing, u har soniyada bir marta consolega 1 dan 5 gacha bolgan raqamlarni chop etsin va 5 soniyadan keyin ishini toxtatsin.
-MASALAN: printNumbers()
+Shunday function yozing, u parametrda berilgan stringni kebab casega otkazib qaytarsin. Bosh harflarni kichik harflarga ham otkazsin.
+MASALAN: stringToKebab(“I love Kebab”) return “i-love-kebab”
+
 
 **/
 
-function printNumbers(): any {
-	let counter = 1;
+function stringToKebab(input: string): any {
+	const str = input.split(' ');
+	let vacant: any[] = [];
+	for (let word of str) {
+		vacant.push(word.toLowerCase());
+	}
 
-	const interval = setInterval(() => {
-		console.log(counter);
-		counter++;
+	// console.log(vacant);
 
-		if (counter > 5) {
-			clearInterval(interval);
-		}
-	}, 1000);
+	return vacant.join('-');
 }
 
-printNumbers();
+console.log(stringToKebab('I Love Kebab'));
