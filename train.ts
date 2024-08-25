@@ -1,17 +1,22 @@
 /**
 
-ZM-TASK:
+ZN-TASK:
 
-Shunday function yozing, u function parametrga berilgan raqamlarni orqasiga ogirib qaytarsin.
-MASALAN: reverseInteger(123456789) return 987654321
-
+Shunday function yozing, uni array va number parametri bolsin. Ikkinchi parametrda berilgan raqamli indexgacha arrayni orqasiga ogirib qaytarsin.
+MASALAN: rotateArray([1, 2, 3, 4, 5, 6], 3) return [5, 6, 1, 2, 3, 4]
 
 
 **/
 
-function reverseInteger(input: number): any {
-	const toString: string = '' + input;
-	return Number(toString.split('').reverse().join(''));
+function rotateArray<T>(arr: T[], index: number): T[] {
+	if (index < 0 || index >= arr.length) {
+		throw new Error('Index is out of bounds');
+	}
+
+	const part1 = arr.slice(0, index).reverse();
+	const part2 = arr.slice(index).reverse();
+
+	return [...part1, ...part2].reverse();
 }
 
-console.log(reverseInteger(123456789));
+console.log(rotateArray([1, 2, 3, 4, 5, 6], 3));
