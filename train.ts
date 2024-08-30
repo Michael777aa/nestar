@@ -1,22 +1,27 @@
 /**
 
-ZN-TASK:
+ZO-TASK:
 
-Shunday function yozing, uni array va number parametri bolsin. Ikkinchi parametrda berilgan raqamli indexgacha arrayni orqasiga ogirib qaytarsin.
-MASALAN: rotateArray([1, 2, 3, 4, 5, 6], 3) return [5, 6, 1, 2, 3, 4]
-
+Shunday function yozing, u parametrdagi string ichidagi qavslar miqdori balansda ekanligini aniqlasin. Ya'ni ochish("(") va yopish(")") qavslar soni bir xil bolishi kerak.
+MASALAN: areParenthesesBalanced("string()ichida(qavslar)soni()balansda") return true
 
 **/
 
-function rotateArray<T>(arr: T[], index: number): T[] {
-	if (index < 0 || index >= arr.length) {
-		throw new Error('Index is out of bounds');
+function areParenthesesBalanced(input: string): boolean {
+	let balance = 0;
+
+	for (const char of input) {
+		if (char === '(') {
+			balance++;
+		} else if (char === ')') {
+			balance--;
+		}
+
+		if (balance < 0) {
+			return false;
+		}
 	}
 
-	const part1 = arr.slice(0, index).reverse();
-	const part2 = arr.slice(index).reverse();
-
-	return [...part1, ...part2].reverse();
+	return balance === 0;
 }
-
-console.log(rotateArray([1, 2, 3, 4, 5, 6], 3));
+console.log(areParenthesesBalanced('string()ichida(qavslar)soni()balansda'));
