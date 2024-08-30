@@ -62,8 +62,8 @@ export class MemberResolver {
 	@UseGuards(WithoutGuard)
 	@Query(() => Member)
 	public async getMember(@Args('memberId') input: string, @AuthMember('_id') memberId: ObjectId): Promise<Member> {
-		console.log('Query: getMember');
 		const targetId = shapeIntoMongoObjectId(input);
+
 		return await this.memberService.getMember(memberId, targetId);
 	}
 
@@ -71,6 +71,7 @@ export class MemberResolver {
 	@Query(() => Members)
 	public async getAgents(@Args('input') input: AgentsInquiry, @AuthMember('_id') memberId: ObjectId): Promise<Members> {
 		console.log('Query: getAgent');
+
 		return await this.memberService.getAgents(memberId, input);
 	}
 	/* ADMIN */
@@ -85,8 +86,8 @@ export class MemberResolver {
 
 	// Authorization: ADMIN
 	@Mutation(() => Member)
-	public async updateMembersByAdmin(@Args('input') input: MemberUpdate): Promise<Member> {
-		console.log('Mutation: updateMembersByAdmin');
-		return await this.memberService.updateMembersByAdmin(input);
+	public async updateMemberByAdmin(@Args('input') input: MemberUpdate): Promise<Member> {
+		console.log('Mutation: updateMemberByAdmin');
+		return await this.memberService.updateMemberByAdmin(input);
 	}
 }

@@ -65,8 +65,10 @@ export class MemberService {
 		return result;
 	}
 	public async getMember(memberId: ObjectId, targetId: ObjectId): Promise<Member> {
-		const search: T = { _id: targetId, MemberStatus: { $in: [MemberStatus.ACTIVE, MemberStatus.BLOCK] } };
+		const search: T = { _id: targetId, memberStatus: { $in: [MemberStatus.ACTIVE, MemberStatus.BLOCK] } };
+
 		const targetMember = await this.memberModel.findOne(search).lean().exec();
+
 		if (!targetMember) throw new InternalServerErrorException(Message.NO_DATA_FOUND);
 
 		if (memberId) {
@@ -134,7 +136,7 @@ export class MemberService {
 		return result[0];
 	}
 
-	public async updateMembersByAdmin(input: MemberUpdate): Promise<Member> {
+	public async updateMemberByAdmin(input: MemberUpdate): Promise<Member> {
 		const result: Member = await this.memberModel.findOneAndUpdate({ _id: input._id }, input, { new: true }).exec();
 		if (!result) throw new InternalServerErrorException(Message.UPDATE_FAILED);
 		return result;
