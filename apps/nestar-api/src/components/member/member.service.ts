@@ -66,15 +66,17 @@ export class MemberService {
 	}
 	public async getMember(memberId: ObjectId, targetId: ObjectId): Promise<Member> {
 		const search: T = { _id: targetId, memberStatus: { $in: [MemberStatus.ACTIVE, MemberStatus.BLOCK] } };
+		console.log('1>>>>');
 
 		const targetMember = await this.memberModel.findOne(search).lean().exec();
-
+		console.log('2>>>>');
 		if (!targetMember) throw new InternalServerErrorException(Message.NO_DATA_FOUND);
 
 		if (memberId) {
 			const viewInput: ViewInput = { memberId: memberId, viewRefId: targetId, viewGroup: ViewGroup.MEMBER };
+			console.log('3>>>>');
 			const newView = await this.viewService.recordView(viewInput);
-
+			console.log('4>>>>');
 			if (newView) {
 				await this.memberModel.findOneAndUpdate(search, { $inc: { memberViews: 1 } }, { new: true }).exec();
 				targetMember.memberViews++;

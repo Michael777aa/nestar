@@ -12,11 +12,14 @@ export class ViewService {
 	public async recordView(input: ViewInput): Promise<View | null> {
 		console.log('recordView executed!');
 		const viewExist = await this.checkViewExistance(input);
+		console.log('5>>>>>>');
+
 		if (!viewExist) {
 			console.log('New View Insert -');
+			return await this.viewModel.create(input);
+		} else {
+			return null;
 		}
-
-		return await this.viewModel.create(input);
 	}
 
 	private async checkViewExistance(input: ViewInput): Promise<View> {
