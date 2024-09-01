@@ -216,4 +216,37 @@ export class PropertyService {
 
 		return result[0];
 	}
+
+	public async getAllPropertiesByAdmin(input: AllPropertiesInquiry): Promise<Properties> {
+		const { propertyStatus, propertyLocationList } = input.search;
+
+		const match: T = {};
+		const sort: T = { [input.sort ?? 'createdAt']: input.direction ?? Direction.DESC };
+
+		if (propertyStatus) {
+			match.propertyStatus = propertyStatus;
+		}
+		if (propertyLocationList) {
+			match.propertyLocation = { $in: propertyLocationList };
+		}
+
+		const result = await this.propertyModel
+			.aggregate([
+				{ $match: match },
+				{ $sort: sort },
+				{
+					$facet: {
+						list: [{ $skip: (input.page - 1) * input.limit }, { $limit: input.limit }],
+						metaCounter: [{ $count: 'total' }],
+					},
+				},
+			])
+			.exec();
+
+		if (result.length === 0 || result[0].list.length === 0) {
+			throw new InternalServerErrorException('No data found');
+		}
+
+		return result[0];
+	}
 }

@@ -72,4 +72,17 @@ export class PropertyResolver {
 		console.log('Query: getAgentProperties');
 		return await this.propertyService.getAgentProperties(memberId, input);
 	}
+
+	/**  ADMIN **/
+
+	@Roles(MemberType.ADMIN)
+	@UseGuards(RolesGuard)
+	@Query(() => Properties)
+	public async getAllPropertiesByAdmin(
+		@Args('input') input: AllPropertiesInquiry,
+		@AuthMember('_id') memberId: ObjectId,
+	): Promise<Properties> {
+		console.log('Query: getAllPropertiesByAdmin');
+		return await this.propertyService.getAllPropertiesByAdmin(input);
+	}
 }
