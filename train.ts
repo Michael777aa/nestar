@@ -1,27 +1,38 @@
 /**
+ZP-TASK:
 
-ZO-TASK:
+shunday function yozing, u 2 ta array parametr qabul qilsin. Siz bu ikki arrayning qiymatlari o'xshash bo'lishini (ya'ni, ularning barcha elementlari bir xil bo'lishini) tekshirishingiz kerak.
 
-Shunday function yozing, u parametrdagi string ichidagi qavslar miqdori balansda ekanligini aniqlasin. Ya'ni ochish("(") va yopish(")") qavslar soni bir xil bolishi kerak.
-MASALAN: areParenthesesBalanced("string()ichida(qavslar)soni()balansda") return true
-
+MASALAN: 
+areArraysEqual([1, 2, 3], [3, 1, 2]) // true
+areArraysEqual([1, 2, 3], [3, 1, 2, 1]) // true
+areArraysEqual([1, 2, 3], [4, 1, 2]) // false
 **/
 
-function areParenthesesBalanced(input: string): boolean {
-	let balance = 0;
+function areArraysEqual<T>(arr1: T[], arr2: T[]): boolean {
+	const frequencyMap1 = createFrequencyMap(arr1);
+	const frequencyMap2 = createFrequencyMap(arr2);
 
-	for (const char of input) {
-		if (char === '(') {
-			balance++;
-		} else if (char === ')') {
-			balance--;
-		}
-
-		if (balance < 0) {
+	if (Object.keys(frequencyMap1).length !== Object.keys(frequencyMap2).length) {
+		return false;
+	}
+	for (let key in frequencyMap1) {
+		if (frequencyMap1[key] !== frequencyMap2[key]) {
 			return false;
 		}
 	}
 
-	return balance === 0;
+	return true;
 }
-console.log(areParenthesesBalanced('string()ichida(qavslar)soni()balansda'));
+function createFrequencyMap<T>(arr: T[]): { [key: string]: number } {
+	return arr.reduce(
+		(acc, item) => {
+			const key = item.toString();
+			acc[key] = (acc[key] || 0) + 1;
+			return acc;
+		},
+		{} as { [key: string]: number },
+	);
+}
+
+console.log(areArraysEqual([1, 2, 3], [3, 1, 2]));
