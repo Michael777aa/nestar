@@ -1,38 +1,28 @@
 /**
-ZP-TASK:
+ZQ-TASK:
 
-shunday function yozing, u 2 ta array parametr qabul qilsin. Siz bu ikki arrayning qiymatlari o'xshash bo'lishini (ya'ni, ularning barcha elementlari bir xil bo'lishini) tekshirishingiz kerak.
+Shunday function yozing, u parametridagi array ichida 2 marta qaytarilgan sonlarni alohida araryda qaytarsin.
+MASALAN: findDuplicates([1,2,3,4,5,4,3,4]) return [3, 4]
 
-MASALAN: 
-areArraysEqual([1, 2, 3], [3, 1, 2]) // true
-areArraysEqual([1, 2, 3], [3, 1, 2, 1]) // true
-areArraysEqual([1, 2, 3], [4, 1, 2]) // false
 **/
 
-function areArraysEqual<T>(arr1: T[], arr2: T[]): boolean {
-	const frequencyMap1 = createFrequencyMap(arr1);
-	const frequencyMap2 = createFrequencyMap(arr2);
-
-	if (Object.keys(frequencyMap1).length !== Object.keys(frequencyMap2).length) {
-		return false;
+function findDuplicates(arr: number[]): number[] {
+	const countMap = new Map<number, number>();
+	const duplicates: number[] = [];
+	for (const num of arr) {
+		if (countMap.has(num)) {
+			countMap.set(num, countMap.get(num)! + 1);
+		} else {
+			countMap.set(num, 1);
+		}
 	}
-	for (let key in frequencyMap1) {
-		if (frequencyMap1[key] !== frequencyMap2[key]) {
-			return false;
+	for (const [num, count] of countMap.entries()) {
+		if (count > 1) {
+			duplicates.push(num);
 		}
 	}
 
-	return true;
-}
-function createFrequencyMap<T>(arr: T[]): { [key: string]: number } {
-	return arr.reduce(
-		(acc, item) => {
-			const key = item.toString();
-			acc[key] = (acc[key] || 0) + 1;
-			return acc;
-		},
-		{} as { [key: string]: number },
-	);
+	return duplicates;
 }
 
-console.log(areArraysEqual([1, 2, 3], [3, 1, 2]));
+console.log(findDuplicates([1, 2, 3, 4, 5, 4, 3, 4]));
