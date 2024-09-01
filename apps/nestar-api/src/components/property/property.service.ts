@@ -178,7 +178,7 @@ export class PropertyService {
 			}));
 	}
 
-	public async getAgentProperties(memberId: ObjectId, input: AgentPropertiesInquiry): Promise<Property[]> {
+	public async getAgentProperties(memberId: ObjectId, input: AgentPropertiesInquiry): Promise<Properties> {
 		const { propertyStatus } = input.search;
 
 		if (propertyStatus === PropertyStatus.DELETE) {
