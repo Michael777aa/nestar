@@ -198,3 +198,39 @@ export class AgentPropertiesInquiry {
 	@Field(() => APISearch)
 	search: APISearch;
 }
+
+@InputType()
+export class ALPISearch {
+	@IsOptional()
+	@Field(() => PropertyLocation, { nullable: true })
+	propertyStatus?: PropertyStatus;
+
+	@IsOptional()
+	@Field(() => PropertyStatus, { nullable: true })
+	propertyLocationList?: PropertyLocation[];
+}
+@InputType()
+export class AllPropertiesInquiry {
+	@IsNotEmpty()
+	@Min(1)
+	@Field(() => Int)
+	page: number;
+
+	@IsNotEmpty()
+	@Min(1)
+	@Field(() => Int)
+	limit: number;
+
+	@IsNotEmpty()
+	@IsIn(availablePropertySorts)
+	@Field(() => String, { nullable: true })
+	sort?: string;
+
+	@IsNotEmpty()
+	@Field(() => Direction, { nullable: true })
+	direction?: Direction;
+
+	@IsNotEmpty()
+	@Field(() => ALPISearch)
+	search: ALPISearch;
+}
