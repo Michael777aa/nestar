@@ -87,8 +87,9 @@ export class MemberService {
 			}
 		}
 
-		// me liked
-		// mew followed
+		const likeInput = { memberId: memberId, likeRefId: targetId, likeGroup: LikeGroup.MEMBER };
+		targetMember.meLiked = await this.likeService.checkLikeExistance(likeInput);
+
 		return targetMember;
 	}
 	public async getAgents(memberId: ObjectId, input: AgentsInquiry): Promise<Members> {
