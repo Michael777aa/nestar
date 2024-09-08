@@ -11,9 +11,9 @@ import { BoardArticleModule } from '../board-article/board-article.module';
 @Module({
 	imports: [
 		MongooseModule.forFeature([{ name: 'Comment', schema: CommentSchema }]),
-		AuthModule,
 		MemberModule,
 		PropertyModule,
+		AuthModule,
 		BoardArticleModule,
 	],
 	providers: [CommentResolver, CommentService],
