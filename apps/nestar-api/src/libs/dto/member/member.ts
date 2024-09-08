@@ -83,8 +83,8 @@ export class Member {
 	accessToken?: string;
 
 	/* FROM AGGREGATION */
-	@Field(() => MeLiked, { nullable: true })
-	meLiked: MeLiked[];
+	@Field(() => [MeLiked], { nullable: true })
+	meLiked?: MeLiked[];
 }
 
 @ObjectType()

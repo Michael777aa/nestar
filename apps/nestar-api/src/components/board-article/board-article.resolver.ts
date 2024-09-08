@@ -39,7 +39,7 @@ export class BoardArticleResolver {
 	): Promise<BoardArticle> {
 		console.log('Mutation: getBoardArticle');
 		const articleId = shapeIntoMongoObjectId(input);
-		return this.boardArticleService.getBoardArticle(memberId, articleId);
+		return await this.boardArticleService.getBoardArticle(memberId, articleId);
 	}
 
 	@UseGuards(AuthGuard)
