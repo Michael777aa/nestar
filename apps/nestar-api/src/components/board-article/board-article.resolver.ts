@@ -42,15 +42,14 @@ export class BoardArticleResolver {
 		return this.boardArticleService.getBoardArticle(memberId, articleId);
 	}
 
+	@UseGuards(AuthGuard)
 	@Mutation((returns) => BoardArticle)
 	public async updateBoardArticle(
 		@Args('input') input: BoardArticleUpdate,
 		@AuthMember('_id') memberId: ObjectId,
 	): Promise<BoardArticle> {
 		console.log('Mutation: updateBoardArticle');
-
 		input._id = shapeIntoMongoObjectId(input._id);
-
 		return await this.boardArticleService.updateBoardArticle(memberId, input);
 	}
 
@@ -103,7 +102,7 @@ export class BoardArticleResolver {
 	}
 
 	@UseGuards(WithoutGuard)
-	@Query((returns) => BoardArticle)
+	@Mutation((returns) => BoardArticle)
 	public async removeBoardArticleByAdmin(
 		@Args('articleId') input: string,
 		@AuthMember('_id') memberId: ObjectId,

@@ -71,12 +71,15 @@ export class BoardArticleService {
 
 	public async updateBoardArticle(memberId: ObjectId, input: BoardArticleUpdate): Promise<BoardArticle> {
 		const { _id, articleStatus } = input;
+		console.log('MEMBERID', memberId);
+		console.log('ID', _id);
 
 		const result = await this.boardArticleModel
 			.findOneAndUpdate({ _id: _id, memberId: memberId, articleStatus: BoardArticleStatus.ACTIVE }, input, {
 				new: true,
 			})
 			.exec();
+		console.log('RESULT', result);
 
 		if (!result) {
 			throw new InternalServerErrorException(Message.UPDATE_FAILED);
