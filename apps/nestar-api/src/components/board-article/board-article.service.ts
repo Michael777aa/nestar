@@ -16,6 +16,9 @@ import { BoardArticleStatus } from '../../libs/enums/board-article.enum';
 import { ViewGroup } from '../../libs/enums/view.enum';
 import { BoardArticleUpdate } from '../../libs/dto/board-article/board-article.update';
 import { lookupMember, shapeIntoMongoObjectId } from '../../libs/config';
+import { LikeService } from '../like/like.service';
+import { LikeInput } from '../../libs/dto/like/like.input';
+import { LikeGroup } from '../../libs/enums/like.enum';
 
 @Injectable()
 export class BoardArticleService {
@@ -23,6 +26,7 @@ export class BoardArticleService {
 		@InjectModel('BoardArticle') private readonly boardArticleModel: Model<BoardArticle>,
 		private memberService: MemberService,
 		private viewService: ViewService,
+		private likeService: LikeService,
 	) {}
 	public async createBoardArticle(memberId: ObjectId, input: BoardArticleInput): Promise<BoardArticle> {
 		input.memberId = memberId;
@@ -131,6 +135,23 @@ export class BoardArticleService {
 		}
 
 		return result[0];
+	}
+
+	public async likeTargetBoardArticle(memberId: ObjectId, likeRefId: ObjectId): Promise<BoardArticle> {
+		const target: BoardArticle = await this.boardArticleModel
+			.findOne({ _id: likeRefId, articleStatus: BoardArticleStatus.ACTIVE })
+			.exec();
+		if (!target) throw new InternalServerErrorException(Message.NO_DATA_FOUND);
+		const input: LikeInput = { memberId: memberId, likeRefId: likeRefId, likeGroup: LikeGroup.ARTICLE };
+
+		const modifier: number = await this.likeService.toggleLike(input);
+		const result = await this.boardArticleStatsEditor({
+			_id: likeRefId,
+			targetKey: 'articleLikes',
+			modifier: modifier,
+		});
+		if (!result) throw new InternalServerErrorException(Message.SOMETHING_WENT_WRONG);
+		return result;
 	}
 
 	public async getAllBoardArticlesByAdmin(input: AllBoardArticlesInquiry): Promise<BoardArticles> {
