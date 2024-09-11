@@ -107,7 +107,7 @@ export class FollowService {
 							{ $skip: (input.page - 1) * input.limit },
 							{ $limit: input.limit },
 							lookupAuthMemberLiked(memberId, '$followingId'),
-							lookupAuthMemberFollowed({ followerId: memberId, followingId: 'followingId' }),
+							lookupAuthMemberFollowed({ followerId: memberId, followingId: '$followingId' }),
 							lookupFollowingData,
 							{ $unwind: '$followingData' },
 						],
@@ -116,6 +116,7 @@ export class FollowService {
 				},
 			])
 			.exec();
+		console.log('RESULT', result[0]);
 
 		if (!result.length) {
 			throw new InternalServerErrorException(Message.NO_DATA_FOUND);
@@ -142,8 +143,8 @@ export class FollowService {
 							{ $skip: (input.page - 1) * input.limit },
 							{ $limit: input.limit },
 							lookupAuthMemberLiked(memberId, '$followerId'),
-							// mefollowed
-							lookupFollowingData,
+							lookupAuthMemberFollowed({ followerId: memberId, followingId: '$followerId' }),
+							lookupFollowerData,
 							{ $unwind: '$followerData' },
 						],
 						metaCounter: [{ $count: 'total' }],
