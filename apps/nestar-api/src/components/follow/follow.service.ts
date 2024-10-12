@@ -1,6 +1,5 @@
 import { BadRequestException, Injectable, InternalServerErrorException } from '@nestjs/common';
 import { Model, ObjectId } from 'mongoose';
-import { ViewService } from '../view/view.service';
 import { Follower, Following, Followings } from '../../libs/dto/follow/follow';
 import { InjectModel } from '@nestjs/mongoose';
 import { MemberService } from '../member/member.service';
@@ -13,7 +12,6 @@ import {
 	lookupFollowingData,
 } from '../../libs/config';
 import { FollowInquiry } from '../../libs/dto/follow/follow.input';
-import { lookup } from 'dns/promises';
 
 @Injectable()
 export class FollowService {
@@ -64,10 +62,12 @@ export class FollowService {
 			throw new InternalServerErrorException(Message.NO_DATA_FOUND);
 		}
 
-		const result = await this.followModel.findOneAndDelete({
-			followingId: followingId,
-			followerId: followerId,
-		});
+		const result = await this.followModel
+			.findOneAndDelete({
+				followingId: followingId,
+				followerId: followerId,
+			})
+			.exec();
 
 		if (!result) {
 			throw new InternalServerErrorException(Message.NO_DATA_FOUND);

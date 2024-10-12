@@ -61,11 +61,9 @@ export class CommentService {
 	public async updateComment(memberId: ObjectId, input: CommentUpdate): Promise<Comment> {
 		const { _id } = input;
 
-		const result = await this.commentModel.findOneAndUpdate(
-			{ _id: _id, memberId: memberId, commentStatus: CommentStatus.ACTIVE },
-			input,
-			{ new: true },
-		);
+		const result = await this.commentModel
+			.findOneAndUpdate({ _id: _id, memberId: memberId, commentStatus: CommentStatus.ACTIVE }, input, { new: true })
+			.exec();
 
 		if (!result) {
 			throw new InternalServerErrorException(Message.UPDATE_FAILED);
@@ -105,7 +103,7 @@ export class CommentService {
 		return result[0];
 	}
 	public async removeCommentByAdmin(input: ObjectId): Promise<Comment> {
-		const result = await this.commentModel.findByIdAndDelete(input);
+		const result = await this.commentModel.findByIdAndDelete(input).exec();
 		if (!result) throw new InternalServerErrorException(Message.REMOVE_FAILED);
 		return result;
 	}
